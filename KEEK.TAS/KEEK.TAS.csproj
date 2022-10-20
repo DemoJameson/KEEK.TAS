@@ -1,0 +1,68 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <AssemblyName>KEEK.TAS</AssemblyName>
+        <Description>TAS mod for KEEK</Description>
+        <Version>1.0.0</Version>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <LangVersion>latest</LangVersion>
+        <RestoreAdditionalProjectSources>
+            https://api.nuget.org/v3/index.json;
+            https://nuget.bepinex.dev/v3/index.json
+        </RestoreAdditionalProjectSources>
+        <RootNamespace>KEEK.TAS</RootNamespace>
+        <PathMap>$(MSBuildProjectDirectory)=KEEK.TAS/</PathMap>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all" />
+        <PackageReference Include="BepInEx.Core" Version="5.*" />
+        <PackageReference Include="BepInEx.PluginInfoProps" Version="2.*" />
+        <PackageReference Include="UnityEngine.Modules" Version="2020.3.5" />
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
+        <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" PrivateAssets="all" />
+    </ItemGroup>
+
+    <ItemDefinitionGroup>
+        <Reference>
+            <Private>False</Private>
+        </Reference>
+    </ItemDefinitionGroup>
+
+    <ItemGroup>
+        <Reference Include="Assembly-CSharp">
+            <HintPath>libs-stripped\Assembly-CSharp-nstrip.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Include="..\TAS.Core\**\*.cs">
+            <Link>Core\%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+        <Compile Remove="..\TAS.Core\Properties\**" />
+        <Compile Remove="..\TAS.Core\obj\**" />
+        <Reference Include="J2i.Net.XInputWrapper">
+            <HintPath>..\TAS.Core\libs-stripped\J2i.Net.XInputWrapper-nstrip.dll</HintPath>
+        </Reference>
+        <Folder Include="Core" />
+    </ItemGroup>
+
+    <Import Project="..\TAS.Shared\TAS.Shared.projitems" Label="Shared" />
+
+    <ItemGroup>
+      <Compile Remove="libs-stripped\**" />
+      <EmbeddedResource Remove="libs-stripped\**" />
+      <None Remove="libs-stripped\**" />
+    </ItemGroup>
+
+    <Target Condition="'$(Configuration)' == 'Release'" Name="PostBuild" AfterTargets="PostBuildEvent">
+        <Exec Command="xcopy $(SolutionDir)BepInex_x64 $(SolutionDir)out /E/H/C/I/Y" />
+        <Exec Command="copy $(TargetPath) $(SolutionDir)out\BepInEx\plugins\KEEK.TAS\ /Y" />
+        <Exec Command="xcopy &quot;$(SolutionDir)TAS Files&quot; &quot;$(SolutionDir)out\TAS Files&quot; /E/H/C/I/Y" />
+        <Exec Command="copy $(SolutionDir)TAS.Studio\bin\Release\net452\TAS.Studio.exe $(SolutionDir)out /Y" />
+        <Exec Command="powershell -Command Compress-Archive -Path '$(SolutionDir)out\*' -DestinationPath '$(SolutionDir)out\KEEK.TAS_Windows_v$(Version).zip' -Force" />
+    </Target>
+</Project>

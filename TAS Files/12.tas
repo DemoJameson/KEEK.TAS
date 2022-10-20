@@ -1,0 +1,33 @@
+RecordCount: 85
+
+Load 14
+
+#Start
+  63
+   3,R,J
+  10,R,K
+   1,X
+  12
+   3,R,F,A,180
+  10,R,F
+   3,R,J
+  46,R,K
+   1,R,F
+   3,R,J,F
+  42,R,K,F
+   1,R
+   2,R,F
+   1,R
+   3,R,F
+   3,R,J,F
+  32,R,K,F
+  43,R,X
+  41,R
+   3,R,J
+  39,R,K
+  30,R,X
+   6,R,P
+  40,R
+   2,R,X
+
+Time: 0:04.39(440)

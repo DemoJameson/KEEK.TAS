@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <RootNamespace>TAS.Core</RootNamespace>
+        <LangVersion>default</LangVersion>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <PathMap>$(MSBuildProjectDirectory)=TAS.Core/</PathMap>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Reference Include="J2i.Net.XInputWrapper">
+        <HintPath>libs-stripped\J2i.Net.XInputWrapper-nstrip.dll</HintPath>
+        <Private>True</Private>
+      </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="libs-stripped\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="libs-stripped\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="libs-stripped\**" />
+    </ItemGroup>
+
+    <Import Project="..\TAS.Shared\TAS.Shared.projitems" Label="Shared" />
+</Project>

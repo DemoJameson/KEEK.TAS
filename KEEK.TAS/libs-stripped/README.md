@@ -1,0 +1,1 @@
+The dlls here are stripped with [NStrip](https://github.com/BepInEx/NStrip), and the `Assembly-CSharp-nstrip.dll` all types, methods, properties and fields are set to public.
