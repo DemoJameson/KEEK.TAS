@@ -22,9 +22,16 @@ e.g. 123,R,J (For 123 frames, hold Right and Jump)
 - K = Jump2
 - F = Fire
 - A = Fire Angle
-- P = Pause 
+- P = Pause
 
-## Playback / Recording of Input File
+## Special Input
+
+### Breakpoints
+- You can create a breakpoint in the input file by typing `***` by itself on a single line
+- The program when played back from the start will fast forward until it reaches that line and then go into frame stepping mode
+- You can specify the speed with `***X`, where `X` is the speedup factor. e.g. `***10` will go at 10x speed, `***0.5` will go at half speed.
+
+## Playback of Input File
 ### Controller
 While in game
 - Playback/Stop: Right Stick
@@ -49,5 +56,5 @@ While in game
     - Frame step continuously: RightShift
 
 ## Credits
-* [CelesteTAS](https://github.com/ShootMe/CelesteTAS)
+* [TinertiaTAS](https://github.com/ShootMe/TinertiaTAS)
 * [CelesteTAS-EverestInterop](https://github.com/EverestAPI/CelesteTAS-EverestInterop)
