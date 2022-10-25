@@ -24,6 +24,16 @@ public record InputFrame : InputFrameBase {
         new[] {Actions.Left, Actions.Right},
     };
 
+    public string LineText { get; }
+    public bool IsInput { get; }
+    public bool IsComment { get; }
+    public bool IsCommentRoom { get; }
+    public bool IsCommentTime { get; }
+    public bool IsCommand { get; }
+    public bool IsBreakpoint { get; }
+    public bool IsEmpty { get; }
+    public bool IsEmptyOrZeroFrameInput => IsEmpty || IsInput && Frames == 0;
+
     public InputFrame(int frames, string actions) : this($"{frames},{actions}") { }
 
     public InputFrame(string line) {
@@ -72,16 +82,6 @@ public record InputFrame : InputFrameBase {
             index++;
         }
     }
-
-    public string LineText { get; }
-    public bool IsInput { get; }
-    public bool IsComment { get; }
-    public bool IsCommentRoom { get; }
-    public bool IsCommentTime { get; }
-    public bool IsCommand { get; }
-    public bool IsBreakpoint { get; }
-    public bool IsEmpty { get; }
-    public bool IsEmptyOrZeroFrameInput => IsEmpty || IsInput && Frames == 0;
 
     private int ReadFrames(string line, ref int start) {
         bool foundFrames = false;
