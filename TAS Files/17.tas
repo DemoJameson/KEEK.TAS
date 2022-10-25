@@ -1,18 +1,19 @@
-RecordCount: 136
+RecordCount: 151
 
+   1
 Load 19
 
 #Start
   63
    3,R,J
-  11,R,K
+  12,R,K
   29,R,X
    3,R,J
-  30,R,K
+  32,R,K
   15,R,X
    3,R,J
-  12,R,K
-  35,R,F,A,90
+   8,R,K
+  37,R,F,A,80
    3,R,J,F,A,200
   40,R,K,F
   30,R,X
@@ -24,4 +25,4 @@ Load 19
   33,R
    2,R,X
 
-Time: 0:03.85(385)
+Time: 0:03.86(386)

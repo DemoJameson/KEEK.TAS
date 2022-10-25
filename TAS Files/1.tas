@@ -1,5 +1,6 @@
-RecordCount: 123
+RecordCount: 151
 
+   1
 Load 3
 
 #Start
@@ -13,28 +14,23 @@ Load 3
    3,R,J
   14,R,K
   34,R,X
-   3,R,F,A,30
-   3
+   2,R,F,A,30
+   4,R
    3,J,F
   25,K,F
-  11,R,F
-   9,R
+  12,R,F
+   6,R
+   2
    3,R,J
   25,R,K
   13,R,X
    4,R,F
    1,R
    2,R,F
-   1,R
-   2,R,F
-   1,R
-   2,R,F
-   1,R
-   2,R,F
-   1,R
+  19,R
    3,R,J
    9,R,K
   14,R,X
 
-Time: 0:03.65(365)
+Time: 0:03.62(362)
 

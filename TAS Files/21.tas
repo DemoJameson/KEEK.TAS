@@ -1,5 +1,6 @@
-RecordCount: 128
+RecordCount: 133
 
+   1
 Load 23
 
 #Start
@@ -9,8 +10,8 @@ Load 23
   10,R
  119,F,A,90
   22,F,A,36
-  45,R,F
-  46,F
+  44,R,F
+  47,F
    3,R,J,F
   36,R,K,F
   30,R,X
@@ -30,6 +31,6 @@ Load 23
    3,R,J,F
   36,R,K,F
   30,R,X
-  27,R
+  28,R
 
-Time: 0:06.61(662)
+Time: 0:06.62(663)

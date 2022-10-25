@@ -59,7 +59,6 @@ public class Plugin : BaseUnityPlugin {
             Hotkeys.Update();
         }
         
-        PauseCommand.Resume();
         TimeCommand.Finish();
     }
 

@@ -1,10 +1,11 @@
-RecordCount: 40
+RecordCount: 42
 
+   1
 Load 25
 
 #Start
   63
-   1,R,J
+   2,R,J
   46,R,X
   30,R,C
   20,R
@@ -26,4 +27,4 @@ Load 25
   13,R,X
    2,F
 
-Time: 0:03.14(314)
+Time: 0:04.11(411)

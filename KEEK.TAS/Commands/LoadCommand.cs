@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 
 namespace KEEK.TAS.Commands; 
 
-public static class LoadCommmand {
+public static class LoadCommand {
     [TasCommand("Load", LegalInMainGame = false)]
     private static void LoadLevel(string[] args) {
         if (args.Length == 0) {
