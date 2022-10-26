@@ -3,7 +3,7 @@ using System;
 namespace TAS.Core.Input;
 
 public record FastForward {
-    public static float DefaultSpeed = 400f;
+    public const float DefaultSpeed = 1000f;
     public const float MinSpeed = 1f / 60f;
     public readonly int Frame;
     public readonly int Line;

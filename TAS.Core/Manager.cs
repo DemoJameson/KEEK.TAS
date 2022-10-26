@@ -176,10 +176,9 @@ public static class Manager {
 
     // Called on frame end e.g. Unity component.LateUpdate
     public static void SendStateToStudio() {
-        // todo frameCounter
-        // if (UltraFastForwarding && Engine.FrameCounter % 23 > 0) {
-        // return;
-        // }
+        if (UltraFastForwarding && Game.FrameCount % 23 > 0) {
+            return;
+        }
 
         StudioInfo studioInfo = new(
             Controller.Previous?.Line ?? -1,

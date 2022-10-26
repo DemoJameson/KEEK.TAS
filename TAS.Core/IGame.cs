@@ -8,6 +8,7 @@ public interface IGame {
     float SlowForwardSpeed { get; }
     string StudioInfo { get; }
     string LevelName { get; }
+    ulong FrameCount { get; }
     void SetInputs(InputFrame inputFrame);
     void SetFrameRate(float multiple);
     void OnClientCreate();

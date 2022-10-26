@@ -84,9 +84,6 @@ public sealed class CommunicationGame : CommunicationBase {
         object[] objects = BinaryFormatterHelper.FromByteArray<object[]>(data);
         GameDataType gameDataType = (GameDataType) objects[0];
         string gameData = gameDataType switch {
-            GameDataType.ConsoleCommand => GetConsoleCommand((bool) objects[1]),
-            // todo ExactGameInfo
-            GameDataType.ExactGameInfo => "GameInfo.ExactStudioInfo",
             _ => string.Empty
         };
 
@@ -96,12 +93,6 @@ public sealed class CommunicationGame : CommunicationBase {
     private void ReturnData(string gameData) {
         byte[] gameDataBytes = Encoding.Default.GetBytes(gameData ?? string.Empty);
         WriteMessageGuaranteed(new Message(MessageID.ReturnData, gameDataBytes));
-    }
-
-    private string GetConsoleCommand(bool simple) {
-        // todo GetConsoleCommand
-        return "load 1";
-        // return ConsoleCommand.CreateConsoleCommand(simple);
     }
 
     private void ProcessSendPath(byte[] data) {

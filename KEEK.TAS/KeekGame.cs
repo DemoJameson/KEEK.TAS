@@ -31,6 +31,8 @@ public class KeekGame : IGame {
     public string CurrentTime => FormatTime(GlobalData.CurrentGameTime);
     public float FastForwardSpeed => 100f;
     public float SlowForwardSpeed => 0.1f;
+    public string LevelName => SceneManager.GetActiveScene().buildIndex.ToString();
+    public ulong FrameCount => (ulong) Time.frameCount;
 
     private Vector3? lastPlayerPosition;
     private string lastTime;
@@ -103,8 +105,6 @@ public class KeekGame : IGame {
             return "";
         }
     }
-
-    public string LevelName => SceneManager.GetActiveScene().buildIndex.ToString();
 
     public void SetFrameRate(float multiple) {
         int newFrameRate = (int) (FrameRate * multiple);

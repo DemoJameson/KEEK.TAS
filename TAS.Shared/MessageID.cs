@@ -81,7 +81,5 @@ public enum MessageID : byte {
 }
 
 public enum GameDataType : byte {
-    ConsoleCommand,
-    ExactGameInfo,
     SettingValue,
 }

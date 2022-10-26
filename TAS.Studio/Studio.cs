@@ -362,7 +362,9 @@ public partial class Studio : BaseForm {
                         InsertOrRemoveText(InputFrame.BreakpointRegex, "***S");
                         break;
                     case Keys.R: // Ctrl + Shift + R
-                        InsertDataFromGame(GameDataType.ConsoleCommand, false);
+                        if (CommunicationWrapper.StudioInfo is {} info) {
+                            InsertNewLine($"Load {info.LevelName}");
+                        }
                         break;
                     case Keys.C: // Ctrl + Shift + C
                         CopyGameInfo();
@@ -381,9 +383,6 @@ public partial class Studio : BaseForm {
                         break;
                     case Keys.P: // Ctrl + Alt + P
                         CommentUncommentAllBreakpoints();
-                        break;
-                    case Keys.R: // Ctrl + Alt + R
-                        InsertDataFromGame(GameDataType.ConsoleCommand, true);
                         break;
                 }
             }
