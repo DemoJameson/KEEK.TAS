@@ -25,7 +25,7 @@ public static class TimeCommand {
     }
 
     private static void StartTime(Scene _, Scene __) {
-        startTime = Manager.Running ? GlobalData.CurrentGameTime : null;
+        startTime ??= Manager.Running ? GlobalData.CurrentGameTime : null;
     }
 
     private static void GoToNextLevel(Action<NextLevel, CharacterController2D> orig, NextLevel self, CharacterController2D character) {

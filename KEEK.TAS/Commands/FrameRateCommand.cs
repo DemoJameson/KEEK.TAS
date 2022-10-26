@@ -14,7 +14,7 @@ public class FrameRateCommand {
             KeekGame.FrameRate = newFrameRate;
         }
     }
-    
+
     [DisableRun]
     private static void DisableRun() {
         KeekGame.FrameRate = 100;
