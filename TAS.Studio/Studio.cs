@@ -1136,7 +1136,7 @@ public partial class Studio : BaseForm {
 
                 string formattedText = newInput.ToString();
 
-                bool featherAngle = oldInput.HasActions(Actions.Angle)
+                bool featherAngle = oldInput.HasActions(Actions.Fire)
                                     && !string.IsNullOrEmpty(newInput.AngleStr)
                                     && text[text.Length - 1] == ','
                                     && text.Substring(0, text.Length - 1) == formattedText;
@@ -1157,7 +1157,7 @@ public partial class Studio : BaseForm {
                         }
 
                         if (oldInput.Frames == newInput.Frames) {
-                            index = newInput.HasActions(Actions.Angle) ? formattedText.Length : 4;
+                            index = newInput.HasActions(Actions.Fire) ? formattedText.Length : 4;
                         }
 
                         place = new Place(index, start);
@@ -1166,7 +1166,7 @@ public partial class Studio : BaseForm {
                     modified = true;
                 } else {
                     place = new Place(4, start);
-                    if (tas.Selection.IsEmpty && oldInput.HasActions(Actions.Angle) && newInput.HasActions(Actions.Angle)) {
+                    if (tas.Selection.IsEmpty && oldInput.HasActions(Actions.Fire) && newInput.HasActions(Actions.Fire)) {
                         string oldText = oldInput.ToString();
                         string newText = newInput.ToString();
 

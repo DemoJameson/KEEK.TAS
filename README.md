@@ -20,8 +20,7 @@ e.g. 123,R,J (For 123 frames, hold Right and Jump)
 - C = Dash2
 - J = Jump
 - K = Jump2
-- F = Fire
-- A = Fire Angle
+- F = Fire, Angle
 - P = Pause
 
 ## Special Input

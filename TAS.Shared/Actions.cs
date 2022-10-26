@@ -15,8 +15,7 @@ public enum Actions {
     Dash = 1 << 6,
     Dash2 = 1 << 7,
     Fire = 1 << 8,
-    Angle = 1 << 9,
-    Pause = 1 << 10,
+    Pause = 1 << 9,
 }
 
 public static class ActionsUtils {
@@ -30,7 +29,6 @@ public static class ActionsUtils {
         {'X', Actions.Dash},
         {'C', Actions.Dash2},
         {'F', Actions.Fire},
-        {'A', Actions.Angle},
         {'P', Actions.Pause}
     };
 }

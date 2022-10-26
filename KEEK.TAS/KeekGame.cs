@@ -128,7 +128,7 @@ public class KeekGame : IGame {
     }
 
     private void UpdateFireAxis(InputFrame currentInput) {
-        if (currentInput.HasActions(Actions.Angle)) {
+        if (currentInput.Angle.HasValue) {
             InputManager.Instance.FireAxis = new Vector2(currentInput.GetX(), currentInput.GetY()).normalized;
         }
     }

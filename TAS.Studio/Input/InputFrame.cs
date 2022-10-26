@@ -72,7 +72,7 @@ public record InputFrame : InputFrameBase {
             if (ActionsUtils.Chars.TryGetValue(c, out Actions actions)) {
                 Actions ^= actions;
 
-                if (actions == Actions.Angle) {
+                if (actions == Actions.Fire) {
                     index++;
                     ClampAngle(line, ref index);
                     continue;
@@ -131,7 +131,7 @@ public record InputFrame : InputFrameBase {
             Angle = float.Parse(AngleStr);
         } else {
             AngleStr = string.Empty;
-            Angle = 0;
+            Angle = null;
         }
     }
 

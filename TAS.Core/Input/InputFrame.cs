@@ -46,13 +46,14 @@ public record InputFrame : InputFrameBase {
             if (ActionsUtils.Chars.TryGetValue(c, out Actions actions)) {
                 inputFrame.Actions |= actions;
 
-                if (actions == Actions.Angle) {
+                if (actions == Actions.Fire) {
                     index++;
-                    string angleStr = line.Substring(index + 1).Trim();
+                    string angleStr = line.Length > index ? line.Substring(index + 1).Trim() : null;
                     if (angleStr.IsNotNullOrEmpty() && float.TryParse(angleStr, out float angleFloat)) {
                         inputFrame.Angle = angleFloat;
                         inputFrame.AngleStr = angleStr;
                     } else {
+                        inputFrame.Angle = null;
                         inputFrame.AngleStr = "";
                     }
                     continue;

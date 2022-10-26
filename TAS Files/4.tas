@@ -1,4 +1,4 @@
-RecordCount: 33
+RecordCount: 38
 
 Load 6
 
@@ -9,14 +9,14 @@ Load 6
    3,R,J
   21,R,K
   30,R,X
-  20,R,F,A,180
-  25,R,J,F,A,80
-  52,R,F,A,85
-  30,R,F,A,90
-   3,R,J,F
-  51,R,K,F
-   3,R,J,F,A,200
-  44,R,K,F
+  20,R,F,180
+  25,R,J,F,80
+  52,R,F,85
+  30,R,F,90
+   3,R,J,F,
+  51,R,K,F,
+   3,R,J,F,200
+  44,R,K,F,
   30,R,X
    2,R,C
 
