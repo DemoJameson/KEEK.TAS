@@ -12,9 +12,12 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
 using TAS.Shared;
+using TAS.Shared.Communication.GameToStudio;
+using TAS.Shared.Communication.StudioToGame;
 using TAS.Studio.Communication;
 using TAS.Studio.Entities;
 using TAS.Studio.RichText;
+using Keys = System.Windows.Forms.Keys;
 
 namespace TAS.Studio;
 
@@ -34,7 +37,7 @@ public partial class Studio : BaseForm {
     private int totalFrames, currentFrame;
     private bool updating;
 
-    private bool DisableTyping => tasStates.HasFlag(States.Enable) && !tasStates.HasFlag(States.FrameStep) && CommunicationBase.Initialized ||
+    private bool DisableTyping => tasStates.HasFlag(States.Enable) && !tasStates.HasFlag(States.FrameStep) && CommunicationClient.Connected ||
                                   CommunicationWrapper.Forwarding;
 
     private string TitleBarText =>
@@ -43,9 +46,9 @@ public partial class Studio : BaseForm {
         + Version.ToString(3)
         + (string.IsNullOrEmpty(CurrentFileName) ? string.Empty : "   " + CurrentFileName);
 
-    private string CurrentFileName {
-        get => richText.CurrentFileName;
-        set => richText.CurrentFileName = value;
+    public static string CurrentFileName {
+        get => Instance.richText.CurrentFileName;
+        set => Instance.richText.CurrentFileName = value;
     }
 
     private Tuple<string, int> previousFile;
@@ -279,7 +282,7 @@ public partial class Studio : BaseForm {
     private void TASStudio_FormClosed(object sender, FormClosedEventArgs e) {
         Settings.StopWatcher();
         SaveSettings();
-        CommunicationStudio.Instance?.SendPath(string.Empty);
+        CommunicationClient.SendMessage(new PathMessage(""));
         Thread.Sleep(50);
     }
 
@@ -362,7 +365,7 @@ public partial class Studio : BaseForm {
                         InsertOrRemoveText(InputFrame.BreakpointRegex, "***S");
                         break;
                     case Keys.R: // Ctrl + Shift + R
-                        if (CommunicationWrapper.StudioInfo is {} info) {
+                        if (CommunicationWrapper.GameInfo is {} info) {
                             InsertNewLine($"Load {info.LevelName}");
                         }
                         break;
@@ -370,7 +373,7 @@ public partial class Studio : BaseForm {
                         CopyGameInfo();
                         break;
                     case Keys.D: // Ctrl + Shift + D
-                        CommunicationStudio.Instance?.ExternalReset();
+                        CommunicationClient.Connect();
                         break;
                     case Keys.L: // Ctrl + Shift + L
                         CombineInputs(false);
@@ -393,9 +396,8 @@ public partial class Studio : BaseForm {
     }
 
     private void SaveAsFile() {
-        CommunicationStudio.Instance?.WriteWait();
         richText.SaveNewFile();
-        CommunicationStudio.Instance?.SendPath(CurrentFileName);
+        CommunicationClient.SendMessage(new PathMessage(CurrentFileName));
         Text = TitleBarText;
         UpdateRecentFiles();
     }
@@ -483,8 +485,6 @@ public partial class Studio : BaseForm {
             return;
         }
 
-        CommunicationStudio.Instance?.WriteWait();
-
         Tuple<string, int> tuple = new(CurrentFileName, richText.Selection.Start.iLine);
         if (richText.OpenFile(fileName)) {
             previousFile = tuple;
@@ -497,7 +497,7 @@ public partial class Studio : BaseForm {
             }
         }
 
-        CommunicationStudio.Instance?.SendPath(CurrentFileName);
+        CommunicationClient.SendMessage(new PathMessage(CurrentFileName));
         Text = TitleBarText;
     }
 
@@ -704,33 +704,10 @@ public partial class Studio : BaseForm {
         richText.Selection = new Range(richText, cursor, currentLine, cursor, currentLine);
     }
 
-    private void InsertRoomName() => InsertNewLine($"#lvl_{CommunicationWrapper.StudioInfo?.LevelName}");
+    private void InsertRoomName() => InsertNewLine($"#lvl_{CommunicationWrapper.GameInfo?.LevelName}");
 
-    private void InsertTime() => InsertNewLine($"#{CommunicationWrapper.StudioInfo?.CurrentTime}");
-
-    private void InsertDataFromGame(GameDataType gameDataType, object arg = null) {
-        if (GetDataFromGame(gameDataType, arg) is { } gameData) {
-            InsertNewLine(gameData);
-        }
-    }
-
-    private string GetDataFromGame(GameDataType? gameDataTypes, object arg = null) {
-        CommunicationWrapper.ReturnData = null;
-        if (gameDataTypes.HasValue) {
-            CommunicationStudio.Instance.GetDataFromGame(gameDataTypes.Value, arg);
-        }
-
-        int sleepTimeout = 150;
-        while (CommunicationWrapper.ReturnData == null && sleepTimeout > 0) {
-            Thread.Sleep(10);
-            sleepTimeout -= 10;
-        }
-
-        if (CommunicationWrapper.ReturnData == null && sleepTimeout <= 0) {
-            ShowTooltip("Getting data from the game timed out.");
-        }
-
-        return CommunicationWrapper.ReturnData == string.Empty ? null : CommunicationWrapper.ReturnData;
+    private void InsertTime() {
+        InsertNewLine($"#{CommunicationWrapper.GameInfo?.CurrentTime}");
     }
 
     private void InsertNewLine(string text) {
@@ -742,7 +719,7 @@ public partial class Studio : BaseForm {
     }
 
     private void CopyGameInfo() {
-        if (CommunicationWrapper.StudioInfo is { } studioInfo) {
+        if (CommunicationWrapper.GameInfo is { } studioInfo) {
             Clipboard.SetText(studioInfo.GameInfo);
         }
     }
@@ -751,7 +728,7 @@ public partial class Studio : BaseForm {
         bool lastHooked = false;
         while (true) {
             try {
-                bool hooked = CommunicationBase.Initialized;
+                bool hooked = CommunicationClient.Connected;
                 if (lastHooked != hooked) {
                     lastHooked = hooked;
                     Invoke((Action) delegate { EnableStudio(hooked); });
@@ -774,7 +751,7 @@ public partial class Studio : BaseForm {
                     richText.ReadOnly = DisableTyping;
                 }
 
-                Thread.Sleep(14);
+                Thread.Sleep(16);
             } catch {
                 // ignore
             }
@@ -804,7 +781,7 @@ public partial class Studio : BaseForm {
                 richText.ReloadFile();
             }
 
-            CommunicationStudio.Run();
+            CommunicationClient.Connect();
         }
     }
 
@@ -812,14 +789,14 @@ public partial class Studio : BaseForm {
         if (InvokeRequired) {
             Invoke((Action) UpdateValues);
         } else {
-            if (CommunicationWrapper.StudioInfo != null) {
-                StudioInfo studioInfo = CommunicationWrapper.StudioInfo.Value;
-                richText.PlayingLine = studioInfo.CurrentLine;
-                richText.CurrentLineSuffix = studioInfo.CurrentLineSuffix;
-                currentFrame = studioInfo.CurrentFrameInTas;
-                tasStates = (States) studioInfo.tasStates;
+            if (CommunicationWrapper.GameInfo != null) {
+                GameInfoMessage gameInfo = CommunicationWrapper.GameInfo.Value;
+                richText.PlayingLine = gameInfo.CurrentLine;
+                richText.CurrentLineSuffix = gameInfo.CurrentLineSuffix;
+                currentFrame = gameInfo.CurrentFrameInTas;
+                tasStates = gameInfo.States;
                 if (tasStates.HasFlag(States.Enable) && !tasStates.HasFlag(States.FrameStep)) {
-                    totalFrames = studioInfo.TotalFrames;
+                    totalFrames = gameInfo.TotalFrames;
                 }
             } else {
                 currentFrame = 0;
@@ -837,7 +814,6 @@ public partial class Studio : BaseForm {
     private void FixSomeBugsWhenOutOfMinimized() {
         if (lastWindowState == FormWindowState.Minimized && WindowState == FormWindowState.Normal) {
             richText.ScrollLeft();
-            CommunicationStudio.Instance?.ExternalReset();
         }
 
         lastWindowState = WindowState;
@@ -875,8 +851,8 @@ public partial class Studio : BaseForm {
     }
 
     private void UpdateStatusBar() {
-        if (CommunicationBase.Initialized) {
-            string gameInfo = CommunicationWrapper.StudioInfo?.GameInfo ?? string.Empty;
+        if (CommunicationClient.Connected) {
+            string gameInfo = CommunicationWrapper.GameInfo?.GameInfo ?? string.Empty;
             statusBarBuilder.Clear();
             if (currentFrame > 0) {
                 statusBarBuilder.Append($"{currentFrame}/");
@@ -1360,7 +1336,7 @@ public partial class Studio : BaseForm {
     }
 
     private void loadToolStripMenuItem_Click(object sender, EventArgs e) {
-        if (CommunicationWrapper.StudioInfo is { } studioInfo) {
+        if (CommunicationWrapper.GameInfo is { } studioInfo) {
             InsertNewLine($"Load {studioInfo.LevelName}");  
         } else {
             InsertNewLine("Load 3");  
@@ -1390,7 +1366,7 @@ public partial class Studio : BaseForm {
     }
 
     private void reconnectStudioAndCelesteToolStripMenuItem_Click(object sender, EventArgs e) {
-        CommunicationStudio.Instance?.ExternalReset();
+        CommunicationClient.Connect();
     }
 
     private void SwapActionKeys(char key1, char key2) {
@@ -1446,9 +1422,6 @@ public partial class Studio : BaseForm {
     private void showGameInfoToolStripMenuItem_Click(object sender, EventArgs e) {
         Settings.Instance.ShowGameInfo = !Settings.Instance.ShowGameInfo;
         SaveSettings();
-        if (Settings.Instance.ShowGameInfo) {
-            CommunicationStudio.Instance?.ExternalReset();
-        }
     }
 
     private void newFileToolStripMenuItem_Click(object sender, EventArgs e) {

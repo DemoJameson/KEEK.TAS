@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Concurrent;
 using System.Threading;
+using KEEK.TAS;
 using TAS.Core;
 using TAS.Core.Hotkey;
 using TAS.Core.Input;
 using TAS.Core.Input.Commands;
 using TAS.Core.Utils;
 using TAS.Shared;
+using TAS.Shared.Communication.GameToStudio;
 
 namespace TAS;
 
@@ -180,17 +182,17 @@ public static class Manager {
             return;
         }
 
-        StudioInfo studioInfo = new(
+        GameInfoMessage gameInfoMessage = new(
             Controller.Previous?.Line ?? -1,
             $"{Controller.CurrentFrameInInput}{Controller.Previous?.RepeatString ?? ""}",
             Controller.CurrentFrameInTas,
             Controller.Inputs.Count,
-            (int) States,
+            States,
             Game.StudioInfo,
             Game.LevelName,
             Game.CurrentTime
         );
-        CommunicationGame.Instance?.SendState(studioInfo, true);
+        CommunicationServer.SendMessage(gameInfoMessage);
     }
 
     public static bool IsLoading() {

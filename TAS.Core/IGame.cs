@@ -12,6 +12,4 @@ public interface IGame {
     bool IsLoading { get; }
     void SetInputs(InputFrame inputFrame);
     void SetFrameRate(float multiple);
-    void OnClientCreate();
-    void OnClientDestroy();
 }

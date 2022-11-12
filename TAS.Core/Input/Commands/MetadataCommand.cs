@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using KEEK.TAS;
 using TAS.Core.Utils;
+using TAS.Shared.Communication.GameToStudio;
 
 namespace TAS.Core.Input.Commands;
 
@@ -52,6 +54,6 @@ public static class MetadataCommand {
         bool needsReload = Manager.Controller.NeedsReload;
         File.WriteAllLines(tasFilePath, allLines);
         Manager.Controller.NeedsReload = needsReload;
-        CommunicationGame.Instance?.UpdateLines(updateLines);
+        CommunicationServer.SendMessage(new UpdateTextsMessage(updateLines));
     }
 }

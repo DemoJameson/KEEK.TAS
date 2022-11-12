@@ -1,6 +1,6 @@
 using System;
 
-namespace TAS.Core.Hotkey;
+namespace TAS.Shared;
 
 [Flags]
 public enum Keys {

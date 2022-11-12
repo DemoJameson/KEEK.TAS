@@ -19,6 +19,7 @@
         <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all" />
         <PackageReference Include="BepInEx.Core" Version="5.*" />
         <PackageReference Include="BepInEx.PluginInfoProps" Version="2.*" />
+        <PackageReference Include="GodSharp.Socket" Version="2021.412.3" />
         <PackageReference Include="UnityEngine.Modules" Version="2020.3.5" />
     </ItemGroup>
 
@@ -50,12 +51,14 @@
         <Folder Include="Core" />
     </ItemGroup>
 
-    <Import Project="..\TAS.Shared\TAS.Shared.projitems" Label="Shared" />
-
     <ItemGroup>
       <Compile Remove="libs-stripped\**" />
       <EmbeddedResource Remove="libs-stripped\**" />
       <None Remove="libs-stripped\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\TAS.Shared\TAS.Shared.csproj" />
     </ItemGroup>
 
     <Target Condition="'$(Configuration)' == 'Release'" Name="PostBuild" AfterTargets="PostBuildEvent">

@@ -12,6 +12,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using TAS.Shared;
 using TAS.Studio.Entities;
+using Keys = System.Windows.Forms.Keys;
 
 namespace TAS.Studio.RichText;
 

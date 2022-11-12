@@ -148,14 +148,6 @@ public class KeekGame : IGame {
         input.MoveAxis = move;
     }
 
-    public void OnClientCreate() {
-        Application.quitting += CommunicationGame.Destroy;
-    }
-
-    public void OnClientDestroy() {
-        Application.quitting -= CommunicationGame.Destroy;
-    }
-
     private static void UpdateButton(InputFrame currentInput, Actions action, string buttonName) {
         InputManager input = InputManager.Instance;
         Dictionary<string, ButtonState> buttons = input._buttons;

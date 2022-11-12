@@ -70,12 +70,15 @@
     </ItemGroup>
     
     <ItemGroup>
+        <PackageReference Include="GodSharp.Socket" Version="2021.412.3" />
         <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <ProjectReference Include="..\TAS.Shared\TAS.Shared.csproj" />
     </ItemGroup>
     
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">
         <Delete Files="$(TargetDir)$(AssemblyName).exe.config" />
     </Target>
-
-    <Import Project="..\TAS.Shared\TAS.Shared.projitems" Label="Shared" />
 </Project>

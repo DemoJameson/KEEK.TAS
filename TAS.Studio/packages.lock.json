@@ -2,6 +2,12 @@
   "version": 1,
   "dependencies": {
     ".NETFramework,Version=v4.5.2": {
+      "GodSharp.Socket": {
+        "type": "Direct",
+        "requested": "[2021.412.3, )",
+        "resolved": "2021.412.3",
+        "contentHash": "tVBbfWmFIgG2b8k7kS5ZAaasS/EXNnAzaGjgRXCKGxAhRX4EhU/dXiluIWbXihKlogLNWzGK8wISJVhTi6rPFw=="
+      },
       "Microsoft.NETFramework.ReferenceAssemblies": {
         "type": "Direct",
         "requested": "[1.0.2, )",
@@ -15,6 +21,9 @@
         "type": "Transitive",
         "resolved": "1.0.2",
         "contentHash": "H67KhF+Lldlvr/N55gbtlZNCLq20mPGKFaPLbUkK19boUq/7DTJEHAsxC6yUADKlH1Li/bcyeowB/A484ECDPA=="
+      },
+      "tas.shared": {
+        "type": "Project"
       }
     },
     ".NETFramework,Version=v4.5.2/win7-x86": {}

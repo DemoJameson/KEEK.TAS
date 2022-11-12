@@ -4,14 +4,16 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using TAS.Shared;
+using TAS.Shared.Communication.GameToStudio;
+using TAS.Shared.Communication.StudioToGame;
 using TAS.Studio.RichText;
 using Char = TAS.Studio.RichText.Char;
+using Keys = TAS.Shared.Keys;
 
 namespace TAS.Studio.Communication;
 
 static class CommunicationWrapper {
-    public static StudioInfo? StudioInfo;
-    public static string ReturnData;
+    public static GameInfoMessage? GameInfo;
     private static Dictionary<HotkeyID, List<Keys>> bindings;
     private static bool fastForwarding;
     private static bool slowForwarding;
@@ -40,8 +42,8 @@ static class CommunicationWrapper {
         }
 
         bool anyPressed = false;
-        foreach (HotkeyID hotkeyIDs in bindings.Keys) {
-            List<Keys> keys = bindings[hotkeyIDs];
+        foreach (HotkeyID hotkeyID in bindings.Keys) {
+            List<Keys> keys = bindings[hotkeyID];
 
             bool pressed = keys.Count > 0 && keys.All(IsKeyDown);
 
@@ -64,13 +66,13 @@ static class CommunicationWrapper {
             }
 
             if (pressed) {
-                if (hotkeyIDs == HotkeyID.FastForward) {
+                if (hotkeyID == HotkeyID.FastForward) {
                     fastForwarding = true;
-                } else if (hotkeyIDs == HotkeyID.SlowForward) {
+                } else if (hotkeyID == HotkeyID.SlowForward) {
                     slowForwarding = true;
                 }
 
-                CommunicationStudio.Instance?.SendHotkeyPressed(hotkeyIDs);
+                CommunicationClient.SendMessage(new HotkeyMessage(hotkeyID, false));
                 anyPressed = true;
             }
         }
@@ -100,12 +102,12 @@ static class CommunicationWrapper {
         }
 
         if (!pressed) {
-            CommunicationStudio.Instance.SendHotkeyPressed(hotkeyId, true);
+            CommunicationClient.SendMessage(new HotkeyMessage(hotkeyId, true));
             forwarding = false;
         }
     }
 
-    public static void UpdateLines(Dictionary<int, string> updateLines) {
+    public static void UpdateTexts(Dictionary<int, string> updateLines) {
         RichText.RichText tasText = Studio.Instance.richText;
         foreach (int lineNumber in updateLines.Keys) {
             string lineText = updateLines[lineNumber];

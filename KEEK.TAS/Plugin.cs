@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Reflection;
 using BepInEx;
 using BepInEx.Bootstrap;
 using BepInEx.Logging;
 using KEEK.TAS.Commands;
 using TAS;
-using TAS.Core;
 using TAS.Core.Hotkey;
-using TAS.Core.Input.Commands;
-using TAS.Core.Utils;
-using TAS.Shared;
 using UnityEngine;
 
 namespace KEEK.TAS;
@@ -27,12 +22,12 @@ public class Plugin : BaseUnityPlugin {
         TimeCommand.Load();
         HookUtils.Hook(typeof(InputManager), "Update", InputManagerUpdate);
         Manager.Init(new KeekGame());
-        CommunicationGame.Run("KEEK");
+        CommunicationServer.Start();
     }
 
     private void OnDestroy() {
         HookUtils.Dispose();
-        CommunicationGame.OnApplicationExit();
+        CommunicationServer.Stop();
     }
 
     private void OnGUI() {
@@ -64,7 +59,7 @@ public class Plugin : BaseUnityPlugin {
 
     private void LateUpdate() {
         UnlockCursor();
-        Hotkeys.AllowKeyboard = Application.isFocused || !CommunicationBase.Initialized;
+        Hotkeys.AllowKeyboard = Application.isFocused || !CommunicationServer.Connected;
         Manager.SendStateToStudio();
         FixedUpdateFrame = false;
     }

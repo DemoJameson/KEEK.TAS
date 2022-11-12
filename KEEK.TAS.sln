@@ -6,7 +6,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TAS.Core", "TAS.Core\TAS.Co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TAS.Studio", "TAS.Studio\TAS.Studio.csproj", "{D0405916-D7D1-4A25-BBD6-2D5390C71ADA}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TAS.Shared", "TAS.Shared\TAS.Shared.shproj", "{6B20B22D-D4C8-4F9D-A84A-E340551AE591}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TAS.Shared", "TAS.Shared\TAS.Shared.csproj", "{4ABA23A5-3FF7-49ED-A62A-909BF5F1606F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,5 +26,9 @@ Global
 		{D0405916-D7D1-4A25-BBD6-2D5390C71ADA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D0405916-D7D1-4A25-BBD6-2D5390C71ADA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D0405916-D7D1-4A25-BBD6-2D5390C71ADA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4ABA23A5-3FF7-49ED-A62A-909BF5F1606F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4ABA23A5-3FF7-49ED-A62A-909BF5F1606F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4ABA23A5-3FF7-49ED-A62A-909BF5F1606F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4ABA23A5-3FF7-49ED-A62A-909BF5F1606F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
