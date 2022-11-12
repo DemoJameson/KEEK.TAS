@@ -9,9 +9,9 @@ public interface IGame {
     string StudioInfo { get; }
     string LevelName { get; }
     ulong FrameCount { get; }
+    bool IsLoading { get; }
     void SetInputs(InputFrame inputFrame);
     void SetFrameRate(float multiple);
     void OnClientCreate();
     void OnClientDestroy();
-    bool IsLoading();
 }

@@ -88,7 +88,7 @@ public static class Manager {
     }
 
     private static void FrameStepping() {
-        if (States.HasFlag(States.Enable) && (States.HasFlag(States.FrameStep) || Hotkeys.FrameAdvance.Pressed || Hotkeys.PauseResume.Pressed)) {
+        if (!IsLoading() && States.HasFlag(States.Enable) && (States.HasFlag(States.FrameStep) || Hotkeys.FrameAdvance.Pressed || Hotkeys.PauseResume.Pressed)) {
             if (!States.HasFlag(States.FrameStep)) {
                 States |= States.FrameStep;
                 return;
@@ -194,7 +194,7 @@ public static class Manager {
     }
 
     public static bool IsLoading() {
-        return Game.IsLoading();
+        return Game.IsLoading;
     }
 }
 

@@ -33,6 +33,7 @@ public class KeekGame : IGame {
     public float SlowForwardSpeed => 0.1f;
     public string LevelName => SceneManager.GetActiveScene().buildIndex.ToString();
     public ulong FrameCount => (ulong) Time.frameCount;
+    public bool IsLoading => false;
 
     private Vector3? lastPlayerPosition;
     private string lastTime;
@@ -153,10 +154,6 @@ public class KeekGame : IGame {
 
     public void OnClientDestroy() {
         Application.quitting -= CommunicationGame.Destroy;
-    }
-
-    public bool IsLoading() {
-        return false;
     }
 
     private static void UpdateButton(InputFrame currentInput, Actions action, string buttonName) {
