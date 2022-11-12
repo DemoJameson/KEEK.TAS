@@ -887,7 +887,7 @@ public partial class Studio : BaseForm {
             statusBarBuilder.Append(new string('\n', Math.Max(0, 7 - gameInfo.Split('\n').Length)));
             lblStatus.Text = statusBarBuilder.ToString();
         } else {
-            lblStatus.Text = $"{totalFrames}\nSearching...";
+            lblStatus.Text = $"{totalFrames}\n{Settings.Instance.CommunicationHost}:{Settings.Instance.CommunicationPort} Connecting...";
         }
 
         int bottomExtraSpace = TextRenderer.MeasureText("\n", lblStatus.Font).Height / 5;
@@ -1231,6 +1231,8 @@ public partial class Studio : BaseForm {
         enabledAutoBackupToolStripMenuItem.Checked = Settings.Instance.AutoBackupEnabled;
         backupRateToolStripMenuItem.Text = $"Backup Rate (minutes): {Settings.Instance.AutoBackupRate}";
         backupFileCountsToolStripMenuItem.Text = $"Backup File Count: {Settings.Instance.AutoBackupCount}";
+        hostToolStripMenuItem.Text = $"Host: {Settings.Instance.CommunicationHost}";
+        portToolStripMenuItem.Text = $"Port: {Settings.Instance.CommunicationPort}";
     }
 
     private void openPreviousFileToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -1478,6 +1480,48 @@ public partial class Studio : BaseForm {
         }
 
         backupFileCountsToolStripMenuItem.Text = $"Backup File Count: {Settings.Instance.AutoBackupCount}";
+    }
+
+    private void hostToolStripMenuItem_Click(object sender, EventArgs e) {
+        string host = Settings.Instance.CommunicationHost;
+        if (!DialogUtils.ShowInputDialog("Backup Rate (minutes)", ref host)) {
+            return;
+        }
+
+        if (string.IsNullOrEmpty(host)) {
+            Settings.Instance.CommunicationHost = "127.0.0.1";
+        } else {
+            if (Settings.Instance.CommunicationHost != host) {
+                Settings.Instance.CommunicationHost = host;
+                CommunicationClient.Connect();
+            }
+        }
+
+        hostToolStripMenuItem.Text = $"Host: {Settings.Instance.CommunicationHost}";
+    }
+
+    private void portToolStripMenuItem_Click(object sender, EventArgs e) {
+        string portStr = Settings.Instance.CommunicationPort.ToString();
+        if (!DialogUtils.ShowInputDialog("Communication Port", ref portStr)) {
+            return;
+        }
+
+        if (string.IsNullOrEmpty(portStr)) {
+            Settings.Instance.CommunicationPort = 19982;
+        } else if (int.TryParse(portStr, out int port)) {
+            if (port < 1) {
+                port = 1;
+            } else if (port > 65535) {
+                port = 65535;
+            }
+
+            if (Settings.Instance.CommunicationPort != port) {
+                Settings.Instance.CommunicationPort = port;
+                CommunicationClient.Connect();
+            }
+        }
+
+        portToolStripMenuItem.Text = $"Port: {Settings.Instance.CommunicationPort}";
     }
 
     public void SetControlsColor(Themes themes) {

@@ -13,15 +13,16 @@ public static class CommunicationClient {
     private static TcpClient client;
     public static bool Connected => client?.Connected == true;
 
-    public static void Connect() {
+    public static void Connect(string host = null, int? port = null) {
         client?.Stop();
-        // TODO 配置端口
-        client = new("127.0.0.1", 40015) {
+
+        host ??= Settings.Instance.CommunicationHost;
+        port ??= Settings.Instance.CommunicationPort;
+
+        client = new(host, port.Value) {
             OnConnected = c => {
                 Console.WriteLine($"{c.RemoteEndPoint} connected.");
-                Task.Run(() => {
-                    SendMessage(new PathMessage(Studio.CurrentFileName ?? ""));
-                });
+                Task.Run(() => { SendMessage(new PathMessage(Studio.CurrentFileName ?? "")); });
             },
             OnReceived = c => {
                 Console.WriteLine($"Received from {c.RemoteEndPoint}:");
@@ -79,11 +80,11 @@ public static class CommunicationClient {
             Application.Exit();
         }
     }
-    
+
     private static void ReceiveHotkeySettingsMessage(HotkeySettingsMessage hotkeySettingsMessage) {
         CommunicationWrapper.SetBindings(hotkeySettingsMessage.Settings);
     }
-    
+
     private static void ReceiveUpdateTextsMessage(UpdateTextsMessage updateTextsMessage) {
         CommunicationWrapper.UpdateTexts(updateTextsMessage.Texts);
     }

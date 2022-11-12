@@ -68,8 +68,9 @@ public class Settings {
     public int AutoBackupRate = 1;
     public int AutoBackupCount = 100;
     public bool FindMatchCase;
-
     public string LastFileName = "";
+    public string CommunicationHost = "127.0.0.1";
+    public int CommunicationPort = 19982;
 
     // ReSharper disable once FieldCanBeMadeReadOnly.Global
     public List<string> RecentFiles = new();

@@ -1,6 +1,7 @@
 ﻿using System;
 using BepInEx;
 using BepInEx.Bootstrap;
+using BepInEx.Configuration;
 using BepInEx.Logging;
 using KEEK.TAS.Commands;
 using TAS;
@@ -15,6 +16,7 @@ public class Plugin : BaseUnityPlugin {
     public static ManualLogSource Log => Instance.Logger;
     public static bool FixedUpdateFrame { get; private set; }
     private static bool? trainerInstalled;
+    private static ConfigEntry<int> port;
 
     private void Awake() {
         Instance = this;
@@ -22,7 +24,12 @@ public class Plugin : BaseUnityPlugin {
         TimeCommand.Load();
         HookUtils.Hook(typeof(InputManager), "Update", InputManagerUpdate);
         Manager.Init(new KeekGame());
-        CommunicationServer.Start();
+
+        port = Config.Bind("General", "Communication Server Port", 19982);
+        port.SettingChanged += (sender, args) => {
+            CommunicationServer.Start(port.Value);
+        };
+        CommunicationServer.Start(port.Value);
     }
 
     private void OnDestroy() {

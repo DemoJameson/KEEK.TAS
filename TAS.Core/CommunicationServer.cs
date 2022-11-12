@@ -14,10 +14,10 @@ public static class CommunicationServer {
     private static ITcpServer server;
     public static bool Connected => server != null && server.Connections.IsNotEmpty();
 
-    public static void Start() {
+    public static void Start(int? port = null) {
         server?.Stop();
-        // TODO 配置端口
-        server = new TcpServer(40015) {
+        port ??= 19982;
+        server = new TcpServer(port.Value) {
             OnConnected = c => {
                 Console.WriteLine($"{c.RemoteEndPoint} connected.");
                 
