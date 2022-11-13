@@ -5,6 +5,7 @@ using BepInEx.Configuration;
 using BepInEx.Logging;
 using KEEK.TAS.Commands;
 using TAS;
+using TAS.Core;
 using TAS.Core.Hotkey;
 using UnityEngine;
 

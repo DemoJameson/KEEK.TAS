@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using KEEK.TAS;
 using TAS.Core.Utils;
 using TAS.Shared.Communication.GameToStudio;
 

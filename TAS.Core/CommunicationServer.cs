@@ -8,7 +8,7 @@ using TAS.Shared;
 using TAS.Shared.Communication.GameToStudio;
 using TAS.Shared.Communication.StudioToGame;
 
-namespace KEEK.TAS;
+namespace TAS.Core;
 
 public static class CommunicationServer {
     private static ITcpServer server;
@@ -45,7 +45,7 @@ public static class CommunicationServer {
         Console.WriteLine("CommunicationServer Started!");
     }
 
-    public static void SendMessage(IServerToClientMessage message) {
+    public static void SendMessage(IGameToStudioMessage message) {
         if (!Connected) {
             return;
         }

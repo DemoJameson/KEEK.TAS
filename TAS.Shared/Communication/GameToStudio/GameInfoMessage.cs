@@ -5,7 +5,7 @@ namespace TAS.Shared.Communication.GameToStudio;
 // ReSharper disable once StructCanBeMadeReadOnly
 
 [Serializable]
-public record struct GameInfoMessage : IServerToClientMessage {
+public record struct GameInfoMessage : IGameToStudioMessage {
     public readonly int CurrentLine;
     public readonly string CurrentLineSuffix;
     public readonly int CurrentFrameInTas;

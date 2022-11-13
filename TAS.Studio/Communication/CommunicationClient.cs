@@ -26,10 +26,10 @@ public static class CommunicationClient {
             },
             OnReceived = c => {
                 Console.WriteLine($"Received from {c.RemoteEndPoint}:");
-                IServerToClientMessage serverToClientMessage = BinaryFormatterHelper.FromByteArray<IServerToClientMessage>(c.Buffers);
-                Console.WriteLine(serverToClientMessage);
+                IGameToStudioMessage gameToStudioMessage = BinaryFormatterHelper.FromByteArray<IGameToStudioMessage>(c.Buffers);
+                Console.WriteLine(gameToStudioMessage);
 
-                switch (serverToClientMessage) {
+                switch (gameToStudioMessage) {
                     case GameInfoMessage gameInfoMessage:
                         ReceiveStudioInfo(gameInfoMessage);
                         break;
