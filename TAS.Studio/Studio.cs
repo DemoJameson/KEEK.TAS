@@ -361,9 +361,6 @@ public partial class Studio : BaseForm {
                     case Keys.P: // Ctrl + Shift + P
                         ClearBreakpoints();
                         break;
-                    case Keys.OemPeriod: // Ctrl + Shift + OemPeriod -> insert/remove savestate
-                        InsertOrRemoveText(InputFrame.BreakpointRegex, "***S");
-                        break;
                     case Keys.R: // Ctrl + Shift + R
                         if (CommunicationWrapper.GameInfo is {} info) {
                             InsertNewLine($"Load {info.LevelName}");
@@ -1277,10 +1274,6 @@ public partial class Studio : BaseForm {
         InsertOrRemoveText(InputFrame.BreakpointRegex, "***");
     }
 
-    private void insertRemoveSavestateBreakPointToolStripMenuItem_Click(object sender, EventArgs e) {
-        InsertOrRemoveText(InputFrame.BreakpointRegex, "***S");
-    }
-
     private void saveAsToolStripMenuItem_Click(object sender, EventArgs e) {
         SaveAsFile();
     }
@@ -1343,10 +1336,6 @@ public partial class Studio : BaseForm {
         } else {
             InsertNewLine("Load 3");  
         }
-    }
-
-    private void pauseToolStripMenuItem_Click(object sender, EventArgs e) {
-        InsertNewLine("Pause 1");  
     }
 
     private void copyGamerDataMenuItem_Click(object sender, EventArgs e) {
