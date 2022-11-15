@@ -23,7 +23,7 @@ public class InputController {
     private string checksum;
     private int initializationFrameCount;
 
-    private static readonly string DefaultTasFilePath = Path.Combine(Directory.GetCurrentDirectory(), "Game.tas");
+    private static readonly string DefaultTasFilePath = Path.Combine(Directory.GetCurrentDirectory(), "game.tas");
 
     public static string StudioTasFilePath {
         get => studioTasFilePath;
@@ -34,15 +34,6 @@ public class InputController {
 
             Manager.AddMainThreadAction(() => {
                 studioTasFilePath = value;
-
-                string path = string.IsNullOrEmpty(value) ? DefaultTasFilePath : value;
-                try {
-                    if (!File.Exists(path)) {
-                        File.WriteAllText(path, string.Empty);
-                    }
-                } catch {
-                    studioTasFilePath = DefaultTasFilePath;
-                }
 
                 if (Manager.Running) {
                     Manager.DisableRunLater();

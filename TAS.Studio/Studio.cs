@@ -41,7 +41,7 @@ public partial class Studio : BaseForm {
                                   CommunicationWrapper.Forwarding;
 
     private string TitleBarText =>
-        (string.IsNullOrEmpty(CurrentFileName) ? "Game.tas" : Path.GetFileName(CurrentFileName))
+        (string.IsNullOrEmpty(CurrentFileName) ? "game.tas" : Path.GetFileName(CurrentFileName))
         + " - Studio v"
         + Version.ToString(3)
         + (string.IsNullOrEmpty(CurrentFileName) ? string.Empty : "   " + CurrentFileName);
