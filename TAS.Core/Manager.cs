@@ -74,10 +74,10 @@ public static class Manager {
                 FastForwardSpeed = Controller.FastForwardSpeed;
             }
 
-            if (Hotkeys.FastForward.Check) {
-                FastForwardSpeed = Game.FastForwardSpeed;
-            } else if (Hotkeys.SlowForward.Check) {
+            if (Hotkeys.SlowForward.Check) {
                 FastForwardSpeed = Game.SlowForwardSpeed;
+            } else if (Hotkeys.FastForward.Check) {
+                FastForwardSpeed = Game.FastForwardSpeed;
             } else if (Hotkeys.RightThumbStickX > 0) {
                 FastForwardSpeed = Hotkeys.RightThumbStickX * Game.FastForwardSpeed;
             } else if (Hotkeys.RightThumbStickX < 0) {
@@ -102,9 +102,9 @@ public static class Manager {
             while (States.HasFlag(States.Enable)) {
                 float rightStickX = Hotkeys.RightThumbStickX;
                 if (Hotkeys.SlowForward.Check) {
-                    rightStickX = 0.3f;
+                    rightStickX = 0.1f;
                 } else if (Hotkeys.FastForward.Check) {
-                    rightStickX = 0.6f;
+                    rightStickX = 0.5f;
                 }
 
                 CheckToEnable();

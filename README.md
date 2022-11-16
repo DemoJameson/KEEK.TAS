@@ -47,7 +47,7 @@ While in game
 While in game
 - Playback/Stop: RightControl
 - Restart: =
-- Faster/Slower Playback: RightShift / Alt+LeftShift
+- Faster/Slower Playback: RightShift / RightAlt+RightShift
 - Frame Step: [
 - While Frame Stepping:
     - One more frame: [

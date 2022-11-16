@@ -3,7 +3,7 @@ using System;
 namespace TAS.Shared;
 
 [Flags]
-public enum Keys {
+public enum KeyCodes {
     Modifiers = -65536,
     None = 0,
     LButton = 1,
@@ -142,8 +142,8 @@ public enum Keys {
     RShiftKey = 161,
     LControlKey = 162,
     RControlKey = 163,
-    LMenu = 164,
-    RMenu = 165,
+    LAlt = 164,
+    RAlt = 165,
     BrowserBack = 166,
     BrowserForward = 167,
     BrowserRefresh = 168,

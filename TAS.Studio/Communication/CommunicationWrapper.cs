@@ -8,25 +8,24 @@ using TAS.Shared.Communication.GameToStudio;
 using TAS.Shared.Communication.StudioToGame;
 using TAS.Studio.RichText;
 using Char = TAS.Studio.RichText.Char;
-using Keys = TAS.Shared.Keys;
 
 namespace TAS.Studio.Communication;
 
 static class CommunicationWrapper {
     public static GameInfoMessage? GameInfo;
-    private static Dictionary<HotkeyID, List<Keys>> bindings;
+    private static Dictionary<HotkeyID, List<KeyCodes>> bindings;
     private static bool fastForwarding;
     private static bool slowForwarding;
     public static bool Forwarding => fastForwarding || slowForwarding;
 
     [DllImport("User32.dll")]
-    private static extern short GetAsyncKeyState(Keys key);
+    private static extern short GetAsyncKeyState(KeyCodes keyCode);
 
-    private static bool IsKeyDown(Keys keys) {
-        return (GetAsyncKeyState(keys) & 0x8000) == 0x8000;
+    private static bool IsKeyDown(KeyCodes keyCodes) {
+        return (GetAsyncKeyState(keyCodes) & 0x8000) == 0x8000;
     }
 
-    public static void SetBindings(Dictionary<HotkeyID, List<Keys>> newBindings) {
+    public static void SetBindings(Dictionary<HotkeyID, List<KeyCodes>> newBindings) {
         bindings = newBindings;
     }
 
@@ -43,24 +42,24 @@ static class CommunicationWrapper {
 
         bool anyPressed = false;
         foreach (HotkeyID hotkeyID in bindings.Keys) {
-            List<Keys> keys = bindings[hotkeyID];
+            List<KeyCodes> keys = bindings[hotkeyID];
 
             bool pressed = keys.Count > 0 && keys.All(IsKeyDown);
 
             if (pressed && keys.Count == 1) {
-                if (!keys.Contains(Keys.LShiftKey) && IsKeyDown(Keys.LShiftKey)) {
+                if (!keys.Contains(KeyCodes.LShiftKey) && IsKeyDown(KeyCodes.LShiftKey)) {
                     pressed = false;
                 }
 
-                if (!keys.Contains(Keys.RShiftKey) && IsKeyDown(Keys.RShiftKey)) {
+                if (!keys.Contains(KeyCodes.RShiftKey) && IsKeyDown(KeyCodes.RShiftKey)) {
                     pressed = false;
                 }
 
-                if (!keys.Contains(Keys.LControlKey) && IsKeyDown(Keys.LControlKey)) {
+                if (!keys.Contains(KeyCodes.LControlKey) && IsKeyDown(KeyCodes.LControlKey)) {
                     pressed = false;
                 }
 
-                if (!keys.Contains(Keys.RControlKey) && IsKeyDown(Keys.RControlKey)) {
+                if (!keys.Contains(KeyCodes.RControlKey) && IsKeyDown(KeyCodes.RControlKey)) {
                     pressed = false;
                 }
             }
@@ -95,7 +94,7 @@ static class CommunicationWrapper {
 
         bool pressed;
         if (bindings.ContainsKey(hotkeyId)) {
-            List<Keys> keys = bindings[hotkeyId];
+            List<KeyCodes> keys = bindings[hotkeyId];
             pressed = keys.Count > 0 && keys.All(IsKeyDown);
         } else {
             pressed = false;

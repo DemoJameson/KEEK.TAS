@@ -24,7 +24,7 @@ public static class Hotkeys {
     public static Hotkey FrameAdvance { get; private set; }
     public static Hotkey PauseResume { get; private set; }
     public static readonly Dictionary<HotkeyID, Hotkey> KeysDict = new();
-    public static Dictionary<HotkeyID, List<Keys>> KeysInteractWithStudio = new();
+    public static Dictionary<HotkeyID, List<KeyCodes>> KeysInteractWithStudio = new();
     public static bool AllowKeyboard = true;
     public static bool AllowController = true;
 
@@ -39,17 +39,17 @@ public static class Hotkeys {
 
         KeysDict.Clear();
         KeysDict[HotkeyID.StartStop] = StartStop = new Hotkey(
-            new List<Keys> {Keys.RControlKey}, new List<Buttons> {Buttons.RightStick});
+            new List<KeyCodes> {KeyCodes.RControlKey}, new List<Buttons> {Buttons.RightStick});
         KeysDict[HotkeyID.Restart] = Restart = new Hotkey(
-            new List<Keys> {Keys.Oemplus}, new List<Buttons> {Buttons.LeftStick});
+            new List<KeyCodes> {KeyCodes.Oemplus}, new List<Buttons> {Buttons.LeftStick});
         KeysDict[HotkeyID.FastForward] = FastForward = new Hotkey(
-            new List<Keys> {Keys.RShiftKey}, held: true);
+            new List<KeyCodes> {KeyCodes.RShiftKey}, held: true);
         KeysDict[HotkeyID.SlowForward] = SlowForward = new Hotkey(
-            new List<Keys> {Keys.Alt, Keys.RShiftKey}, held: true);
+            new List<KeyCodes> {KeyCodes.RAlt, KeyCodes.RShiftKey}, held: true);
         KeysDict[HotkeyID.FrameAdvance] = FrameAdvance = new Hotkey(
-            new List<Keys> {Keys.OemOpenBrackets}, new List<Buttons> {Buttons.DPadUp});
+            new List<KeyCodes> {KeyCodes.OemOpenBrackets}, new List<Buttons> {Buttons.DPadUp});
         KeysDict[HotkeyID.PauseResume] = PauseResume = new Hotkey(
-            new List<Keys> {Keys.OemCloseBrackets}, new List<Buttons> {Buttons.DPadDown});
+            new List<KeyCodes> {KeyCodes.OemCloseBrackets}, new List<Buttons> {Buttons.DPadDown});
 
         KeysInteractWithStudio = KeysDict.ToDictionary(pair => pair.Key, pair => pair.Value.Keys);
     }
@@ -68,14 +68,14 @@ public static class Hotkeys {
     }
 
     public class Hotkey {
-        public readonly List<Keys> Keys = new();
+        public readonly List<KeyCodes> Keys = new();
         public readonly List<Buttons> Buttons = new();
         private readonly bool held;
         private readonly bool keyCombo;
         private DateTime lastPressedTime;
         public bool OverrideCheck;
 
-        public Hotkey(List<Keys> keys = null, List<Buttons> buttons = null, bool held = false, bool keyCombo = false) {
+        public Hotkey(List<KeyCodes> keys = null, List<Buttons> buttons = null, bool held = false, bool keyCombo = true) {
             if (keys != null) {
                 Keys.AddRange(keys);
             }
@@ -139,10 +139,10 @@ public static class Hotkeys {
         }
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
-        private static extern short GetAsyncKeyState(Keys key);
+        private static extern short GetAsyncKeyState(KeyCodes keyCode);
 
-        private static bool IsKeyDown(Keys key) {
-            return (GetAsyncKeyState(key) & 32768) == 32768;
+        private static bool IsKeyDown(KeyCodes keyCode) {
+            return (GetAsyncKeyState(keyCode) & 32768) == 32768;
         }
 
         private static bool IsButtonDown(Buttons button) {
